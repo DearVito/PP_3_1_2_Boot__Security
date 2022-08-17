@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>User's info</title>
+</head>
+<body>
+<h1>Table with all users: </h1>
+<style>
+    table {
+        background: white;
+        color: black;
+        border-spacing: 1px;
+    }
+    td, th {
+        background: white;
+        padding: 5px;
+    }
+</style>
+<table>
+    <tr>
+        <th>E-MAIL</th>
+        <th>PASSWORD</th>
+        <th>USERNAME</th>
+        <th>ROLES</th>
+        <th colspan="2">AVAILABLE OPERATIONS</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.getEmail()}">E-MAIL</td>
+        <td th:text="${user.getPassword()}">PASSWORD</td>
+        <td th:text="${user.getUsername()}">USERNAME</td>
+        <td>
+            <span th:each="role : ${user.getAuthorities()}" id="role">
+                <span th:text="${role.getAuthority()}">ROLES</span>
+            </span>
+        </td>
+        <td><a th:href="@{/admin/users/{id}(id=${user.getId()})}">[Show user info]</a></td>
+        <td><a th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">[Update user info]</a></td>
+    </tr>
+</table>-->
+<br/>
+<form th:method="GET" action="/admin/users/add">
+    <input type="submit" value="Add new user">
+</form>
+<br/>
+<form th:method="GET" action="/logout">
+    <input type="submit" value="Logout">
+</form>
+</body>
+</html>
