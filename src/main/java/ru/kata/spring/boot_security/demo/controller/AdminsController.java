@@ -10,49 +10,61 @@ import ru.kata.spring.boot_security.demo.service.RolesService;
 import ru.kata.spring.boot_security.demo.service.UsersService;
 
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("/admin")
 public class AdminsController {
     @Autowired
     private UsersService usersServiceImpl;
     @Autowired
     private RolesService roleService;
-
-    @GetMapping()
+    @GetMapping
+    public String adminsPage() {
+        return "/admin/admin";
+    }
+    @GetMapping("/users")
     public String printUsers(ModelMap model) {
         model.addAttribute("users", usersServiceImpl.getListOfUsers());
         return "/admin/users";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", usersServiceImpl.getUserById(id));
-        return "/admin/show";
+        return "/show";
     }
 
-    @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user) {
+    @GetMapping("/users/add")
+    public String newUser(Model model, @ModelAttribute("user") User user) {
+        model.addAttribute("roles",roleService.getRoles());
         return "/admin/new";
     }
 
-    @PostMapping()
-    public String create(@ModelAttribute("user") User user) {
+    @PostMapping("/users")
+    public String create(@ModelAttribute("user") User user, @RequestParam("rolesList") String[] roles) {
+        for (String role: roles) {
+            user.addRole(roleService.findByName(role));
+        }
         usersServiceImpl.save(user);
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/users/{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", usersServiceImpl.getUserById(id));
+        model.addAttribute("roles",roleService.getRoles());
         return "/admin/edit";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@PathVariable("id") Long id, @ModelAttribute("user") User user) {
+    @PatchMapping("/users/{id}")
+    public String update(@PathVariable("id") Long id, @ModelAttribute("user") User user,
+                         @RequestParam("rolesList") String[] roles) {
+        for (String role: roles) {
+            user.addRole(roleService.findByName(role));
+        }
         usersServiceImpl.update(id, user);
         return "redirect:/admin/users";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public String delete(@PathVariable("id") Long id) {
         usersServiceImpl.delete(id);
         return "redirect:/admin/users";

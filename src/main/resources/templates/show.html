@@ -13,5 +13,9 @@
 <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.getId()})}">
   <input type="submit" value="DELETE!">
 </form>
+<br/>
+<form th:method="GET" action="/logout">
+  <input type="submit" value="Logout">
+</form>
 </body>
 </html>

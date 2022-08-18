@@ -1,7 +1,9 @@
 package ru.kata.spring.boot_security.demo.dao;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,8 +18,10 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
-    public Role findById(Long id) {
-        return entityManager.find(Role.class, id);
+    public Role findByName(String name) {
+        return entityManager.createQuery(
+                        "SELECT u from Role u WHERE u.name = :name", Role.class).
+                setParameter("name", name).getSingleResult();
     }
 
     @Override

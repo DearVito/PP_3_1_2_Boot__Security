@@ -9,8 +9,10 @@
     <th:block th:each="msg : ${messages}">
         <h1 th:text="${msg}"></h1>
     </th:block>
-    <a th:href="@{/admin/users}"><h1>List of users </h1></a>
-    <a th:href="@{/admin/users/2}"><h1>Second user's page!</h1></a>
+
+    <form th:method="GET" action="/logout">
+        <input type="submit" value="Logout">
+    </form>
 </div>
 </body>
 </html>

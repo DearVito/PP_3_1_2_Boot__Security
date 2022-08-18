@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +33,9 @@ public class User implements UserDetails {
 
     public void addRole(Role r) {
         roles.add(r);
+    }
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

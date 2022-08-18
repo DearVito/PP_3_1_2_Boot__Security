@@ -22,8 +22,8 @@ public class RolesServiceImpl implements RolesService {
 
     @Override
     @Transactional
-    public Role findById(Long id) {
-        return roleDAO.findById(id);
+    public Role findByName(String name) {
+        return roleDAO.findByName(name);
     }
 
     @Override

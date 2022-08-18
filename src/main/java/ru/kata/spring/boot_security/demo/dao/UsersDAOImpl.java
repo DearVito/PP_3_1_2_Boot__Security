@@ -30,6 +30,7 @@ public class UsersDAOImpl implements UsersDAO {
         oldUser.setUsername(newUser.getUsername());
         oldUser.setPassword(newUser.getPassword());
         oldUser.setEmail(newUser.getEmail());
+        oldUser.setRoles(newUser.getRoles());
         entityManager.merge(oldUser);
     }
     public void delete(Long id) {
