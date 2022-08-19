@@ -9,24 +9,22 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class RolesServiceImpl implements RolesService {
     @Autowired
     RoleDAO roleDAO;
 
     @Override
-    @Transactional
-    public List<Role> getRoles() {
-        return roleDAO.getRoles();
+    public List<Role> getAllPossibleRoles() {
+        return roleDAO.getAllPossibleRoles();
+    }
+
+    @Override
+    public Role getRoleByName(String name) {
+        return roleDAO.getRoleByName(name);
     }
 
     @Override
     @Transactional
-    public Role findByName(String name) {
-        return roleDAO.findByName(name);
-    }
-
-    @Override
     public void saveRole(Role r) {
         roleDAO.saveRole(r);
     }

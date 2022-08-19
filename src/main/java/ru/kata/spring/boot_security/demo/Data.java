@@ -39,7 +39,7 @@ public class Data {
         user.addRole(userRole);
         admin.addRole(userRole);
         admin.addRole(admRole);
-        userService.save(user);
-        userService.save(admin);
+        userService.saveUser(user);
+        userService.saveUser(admin);
     }
 }

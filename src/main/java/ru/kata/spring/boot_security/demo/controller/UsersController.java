@@ -23,7 +23,7 @@ public class UsersController {
 	@Autowired
 	private RolesService roleService;
 	@GetMapping()
-	public String printWelcome(ModelMap model) {
+	public String showWelcomePage(ModelMap model) {
 		List<String> messages = new ArrayList<>();
 		messages.add("Hello!");
 		messages.add("I'm Spring MVC application");
@@ -31,12 +31,12 @@ public class UsersController {
 		return "index";
 	}
 	@GetMapping("/error")
-	public String error() {
+	public String showErrorPage() {
 		return "error";
 	}
 	@GetMapping("/user")
 	public String getUsersPage(Model model, Principal principal) {
-		User user = usersServiceImpl.findByUsername(principal.getName());
+		User user = usersServiceImpl.getUserByUsername(principal.getName());
 		model.addAttribute("user",user);
 		return "show";
 	}

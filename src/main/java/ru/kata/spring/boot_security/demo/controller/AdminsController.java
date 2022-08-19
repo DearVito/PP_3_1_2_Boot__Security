@@ -17,56 +17,56 @@ public class AdminsController {
     @Autowired
     private RolesService roleService;
     @GetMapping
-    public String adminsPage() {
+    public String showAdminsPage() {
         return "/admin/admin";
     }
     @GetMapping("/users")
-    public String printUsers(ModelMap model) {
-        model.addAttribute("users", usersServiceImpl.getListOfUsers());
+    public String showAllUsers(ModelMap model) {
+        model.addAttribute("users", usersServiceImpl.getAllUsers());
         return "/admin/users";
     }
 
     @GetMapping("/users/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
+    public String showUser (@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", usersServiceImpl.getUserById(id));
         return "/show";
     }
 
     @GetMapping("/users/add")
     public String newUser(Model model, @ModelAttribute("user") User user) {
-        model.addAttribute("roles",roleService.getRoles());
+        model.addAttribute("roles",roleService.getAllPossibleRoles());
         return "/admin/new";
     }
 
     @PostMapping("/users")
-    public String create(@ModelAttribute("user") User user, @RequestParam("rolesList") String[] roles) {
+    public String createUser(@ModelAttribute("user") User user, @RequestParam("rolesList") String[] roles) {
         for (String role: roles) {
-            user.addRole(roleService.findByName(role));
+            user.addRole(roleService.getRoleByName(role));
         }
-        usersServiceImpl.save(user);
+        usersServiceImpl.saveUser(user);
         return "redirect:/admin/users";
     }
 
     @GetMapping("/users/{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", usersServiceImpl.getUserById(id));
-        model.addAttribute("roles",roleService.getRoles());
+        model.addAttribute("roles",roleService.getAllPossibleRoles());
         return "/admin/edit";
     }
 
     @PatchMapping("/users/{id}")
-    public String update(@PathVariable("id") Long id, @ModelAttribute("user") User user,
+    public String updateUser (@PathVariable("id") Long id, @ModelAttribute("user") User user,
                          @RequestParam("rolesList") String[] roles) {
         for (String role: roles) {
-            user.addRole(roleService.findByName(role));
+            user.addRole(roleService.getRoleByName(role));
         }
-        usersServiceImpl.update(id, user);
+        usersServiceImpl.updateUser(id, user);
         return "redirect:/admin/users";
     }
 
     @DeleteMapping("/users/{id}")
     public String delete(@PathVariable("id") Long id) {
-        usersServiceImpl.delete(id);
+        usersServiceImpl.deleteUserById(id);
         return "redirect:/admin/users";
     }
 

@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,41 +11,40 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class UsersServiceImpl implements UsersService {
-    private UsersDAO usersDAOImpl;
+    private UsersDAO usersDAO;
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersServiceImpl(UsersDAO userDao, PasswordEncoder passwordEncoder) {
-        this.usersDAOImpl = userDao;
+    public UsersServiceImpl(UsersDAO usersDAO, PasswordEncoder passwordEncoder) {
+        this.usersDAO = usersDAO;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
-    public void save(User user) {
+    public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        usersDAOImpl.save(user);
+        Hibernate.initialize(user.getRoles());
+        usersDAO.saveUser(user);
     }
-    public List<User> getListOfUsers() {
-        return usersDAOImpl.getListOfUsers();
+    public List<User> getAllUsers() {
+        return usersDAO.findAll();
     }
     public User getUserById(Long id) {
-        return usersDAOImpl.getUserById(id);
+        return usersDAO.findUserById(id);
     }
     @Transactional
-    public void update(Long id, User newUser) {
+    public void updateUser(Long id, User newUser) {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        usersDAOImpl.update(id, newUser);
+        usersDAO.updateUser(id, newUser);
     }
     @Transactional
-    public void delete(Long id) {
-        usersDAOImpl.delete(id);
+    public void deleteUserById(Long id) {
+        usersDAO.deleteUserById(id);
     }
 
     @Override
-    @Transactional
-    public User findByUsername(String username) {
-        return usersDAOImpl.findByUsername(username);
+    public User getUserByUsername(String username) {
+        return usersDAO.findUserByUsername(username);
     }
 }
