@@ -5,10 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.RolesService;
 import ru.kata.spring.boot_security.demo.service.UsersService;
 
 import java.security.Principal;
@@ -20,10 +18,8 @@ import java.util.List;
 public class UsersController {
 	@Autowired
 	private UsersService usersServiceImpl;
-	@Autowired
-	private RolesService roleService;
 	@GetMapping()
-	public String showWelcomePage(ModelMap model) {
+	public String getWelcomePage(ModelMap model) {
 		List<String> messages = new ArrayList<>();
 		messages.add("Hello!");
 		messages.add("I'm Spring MVC application");
@@ -31,7 +27,7 @@ public class UsersController {
 		return "index";
 	}
 	@GetMapping("/error")
-	public String showErrorPage() {
+	public String getErrorPage() {
 		return "error";
 	}
 	@GetMapping("/user")

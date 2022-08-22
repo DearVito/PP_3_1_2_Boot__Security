@@ -17,17 +17,17 @@ public class AdminsController {
     @Autowired
     private RolesService roleService;
     @GetMapping
-    public String showAdminsPage() {
+    public String getAdminsPage() {
         return "/admin/admin";
     }
     @GetMapping("/users")
-    public String showAllUsers(ModelMap model) {
+    public String getAllUsers(ModelMap model) {
         model.addAttribute("users", usersServiceImpl.getAllUsers());
         return "/admin/users";
     }
 
     @GetMapping("/users/{id}")
-    public String showUser (@PathVariable("id") Long id, Model model) {
+    public String getUserById (@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", usersServiceImpl.getUserById(id));
         return "/show";
     }
@@ -40,10 +40,7 @@ public class AdminsController {
 
     @PostMapping("/users")
     public String createUser(@ModelAttribute("user") User user, @RequestParam("rolesList") String[] roles) {
-        for (String role: roles) {
-            user.addRole(roleService.getRoleByName(role));
-        }
-        usersServiceImpl.saveUser(user);
+        usersServiceImpl.saveUser(user,roles);
         return "redirect:/admin/users";
     }
 

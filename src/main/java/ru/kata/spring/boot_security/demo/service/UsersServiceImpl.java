@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,17 +13,21 @@ import java.util.List;
 public class UsersServiceImpl implements UsersService {
     private UsersDAO usersDAO;
     PasswordEncoder passwordEncoder;
+    private RolesService rolesService;
 
     @Autowired
-    public UsersServiceImpl(UsersDAO usersDAO, PasswordEncoder passwordEncoder) {
+    public UsersServiceImpl(UsersDAO usersDAO, PasswordEncoder passwordEncoder, RolesService rolesService) {
         this.usersDAO = usersDAO;
         this.passwordEncoder = passwordEncoder;
+        this.rolesService = rolesService;
     }
 
     @Transactional
-    public void saveUser(User user) {
+    public void saveUser(User user, String[] roles) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Hibernate.initialize(user.getRoles());
+        for (String role: roles) {
+            user.addRole(rolesService.getRoleByName(role));
+        }
         usersDAO.saveUser(user);
     }
     public List<User> getAllUsers() {

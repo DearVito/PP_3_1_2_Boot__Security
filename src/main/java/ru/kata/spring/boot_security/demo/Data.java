@@ -19,6 +19,7 @@ public class Data {
     @PostConstruct
     private void postConstruct() {
         String[] rolesAdmin = {"ROLE_ADMIN", "ROLE_USER"};
+        String[] rolesUser = {"ROLE_USER"};
         Role userRole = new Role(rolesAdmin[1]);
         Role admRole = new Role(rolesAdmin[0]);
         roleService.saveRole(admRole);
@@ -39,7 +40,7 @@ public class Data {
         user.addRole(userRole);
         admin.addRole(userRole);
         admin.addRole(admRole);
-        userService.saveUser(user);
-        userService.saveUser(admin);
+        userService.saveUser(user,rolesUser);
+        userService.saveUser(admin,rolesAdmin);
     }
 }
